@@ -99,6 +99,22 @@ describe('configureObject', () => {
       ]
     })
   })
+  test('should still return values for those not found', () => {
+    const config = {
+            _id: {
+              type: 'basic'
+            }
+          },
+          input = {
+
+          },
+          configured = configureObject(config,input)
+   expect(configured).toEqual({
+     _id: {
+       value: null
+     }
+   })
+  })
 })
 
 
