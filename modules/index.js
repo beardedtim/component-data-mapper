@@ -1,11 +1,17 @@
 const utils = require('./utils.js')
+const { defaultActions, configureFromTypes } = utils
 const React = require('react');
 
-const configuredWith = (configuration, Wrapped, ...passedProps) => class extends React.Component {
-  configureData = utils.configureObject(configuration)
+const configuredWith = ({
+  configuration,
+  Component,
+  actions = defaultActions,
+  ...passedProps
+}) => class extends React.Component {
+  configureData = configureFromTypes(actions)(configuration)
   render(){
     return (
-      <Wrapped
+      <Component
         {...this.configureData(this.props)}
         {...passedProps}
       />

@@ -20,14 +20,15 @@ DEMO.displayName = 'DEMO';
 describe('configuredWith', () => {
   test('should return a configured component', () =>{
     const Component = configuredWith({
-                      document: {
-                        type: 'nested',
-                        key: 'document',
-                        value: config,
-                      },
-                    },
-                    DEMO
-                  )
+                        configuration: {
+                          document: {
+                            type: 'nested',
+                            key: 'document',
+                            value: config,
+                          },
+                        },
+                        Component: DEMO
+                      })
     const wrapper = mount(
       <Component
         document={    {
@@ -107,21 +108,24 @@ describe('configuredWith', () => {
 
     WITH_PROPS.displayName = 'WITH_PROPS'
     const Component = configuredWith({
-      document: {
-        type: 'nested',
-        key: 'document',
-        value: {
-          id: {
-            type: 'basic',
-            key: 'docId'
-          },
-          title: {
-            type: 'basic',
-            key: 'postTitle'
-          }
-        }
-      }
-    }, WITH_PROPS);
+                        configuration: {
+                          document: {
+                            type: 'nested',
+                            key: 'document',
+                            value: {
+                              id: {
+                                type: 'basic',
+                                key: 'docId'
+                              },
+                              title: {
+                                type: 'basic',
+                                key: 'postTitle'
+                              }
+                            }
+                          }
+                        },
+                        Component: WITH_PROPS
+                      });
     const wrapper = mount(
       <Component
         document={{

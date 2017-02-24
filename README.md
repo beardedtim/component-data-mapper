@@ -58,7 +58,30 @@ _**MasterConfig:**_
 
 ## configuredWith
 
-This method takes two arguments: `configurationObject` and a `React Component`. It returns the component wrapped and transforms any props given to it using the configurationObject. For a basic prop that we want to transform, we can use `list` or `basic`. If the prop is an object and we want to change those values as well, we have a `nested` type that we can use. To use the `nested` type, you must have the nested configuration object under the `value` for the main key. Example:
+This method takes one object as an argument of the schema:
+
+```
+{
+  configuration,
+  Component,
+  actions = defaultActions,
+  ...passedProps
+}
+```
+
+`configuration` key is the configuration object on how to transform the data coming in.
+
+`Component` key is the component we want to wrap
+
+`actions` key is an array of objects of the schema `{ type: string, method: fn }` that we can point our `configuration` object to.
+
+All other key/value pairs will be passed to the wrapped component untouched.
+
+It returns the component wrapped and transforms any props given to it using the configurationObject. For a basic prop that we want to transform, we can use `list`, `basic`, or `flat`. If the prop is an object of the schema
+
+`{ key: [TARGET_OBJECT_KEY], value: configObject }`
+
+,we have a `nested` type that we can use. To use the `nested` type, you must have the nested configuration object under the `value` for the main key. Example:
 
 I have `document` coming in as a prop to the component I want to configure. I want to configure the `document` keys and values using this function. This is what my `configurationObject` would look like:
 
@@ -111,23 +134,23 @@ const DEMO = ({ document }) => {
   )
 
 }
-const Configured = configuredWith(
-  {
-     document: {
-       key: 'document',
-       type: 'nested',
-       value: {
-         id: {
-           key: 'docType'
-         },
-         title: {
-           key: 'title'
+const Configured = configuredWith({
+    configuration: {
+       document: {
+         key: 'document',
+         type: 'nested',
+         value: {
+           id: {
+             key: 'docType'
+           },
+           title: {
+             key: 'title'
+           }
          }
        }
-     }
-  },
-  DEMO
-)
+    },
+    Component: DEMO
+  })
 <Configured document={{id: 1, title: 'A title!'}}/>
 // <div>I have the id of 1 and title of 'A title!'</h2>
 ```
