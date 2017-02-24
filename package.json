@@ -1,12 +1,13 @@
 {
-  "name": "component-data-mapper",
+  "name": "component-data-mapper-demo",
   "version": "0.0.1",
   "description": "A way to map input data to react props",
-  "main": "index.js",
+  "main": "./lib/utils.js",
   "repository": "https://github.com/beardedtim/component-data-mapper.git",
   "author": "Timi <timiroberts@gmail.com> (https://github.com/beardedtim)",
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
     "babel-jest": "^19.0.0",
     "babel-plugin-transform-class-properties": "^6.23.0",
@@ -23,6 +24,7 @@
     "test": "jest",
     "test:w": "jest --watch",
     "coverage": "jest --coverage",
-    "flow": "flow"
+    "flow": "flow",
+    "build": "babel modules -d lib"
   }
 }

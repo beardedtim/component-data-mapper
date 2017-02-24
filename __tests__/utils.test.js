@@ -1,7 +1,5 @@
 const path = require('path')
 const fs = require('fs')
-
-
 const {
  configureObject,
  handleArrayValue,
@@ -22,6 +20,7 @@ const data = {
       thumbnail: 'http://',
       title: 'This is a title'
     }
+
 
 describe('configureObject', () => {
   test('is a function', () => {
@@ -112,6 +111,22 @@ describe('configureObject', () => {
    expect(configured).toEqual({
      _id: {
        value: null
+     }
+   })
+  })
+  test('should handle no type found', () => {
+    const config = {
+            _id: {
+              type: 'nada'
+            }
+          },
+          input = {
+            _id: 'uh oh'
+          },
+          configured = configureObject(config,input)
+   expect(configured).toEqual({
+     _id: {
+       value: 'uh oh'
      }
    })
   })

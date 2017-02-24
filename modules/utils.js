@@ -7,7 +7,7 @@ interface TransformedObject {
 
 interface ConfigureObject {
   key: string,
-  type: string
+  type: 'list'
 }
 
 interface ArrayConfigObject {
