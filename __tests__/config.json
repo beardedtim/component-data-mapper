@@ -1,0 +1,55 @@
+{
+  "id": {
+    "type": "basic",
+    "key": "id"
+  },
+  "type": {
+    "type": "basic",
+    "key": "docType"
+  },
+  "title": {
+    "type": "basic",
+    "default": "This is a default value",
+    "key": "title"
+  },
+  "text": {
+    "type": "basic",
+    "default": "This is a defualt value for text",
+    "key": "summary"
+  },
+  "bodyColumns": {
+    "type": "list",
+    "values": [
+      {
+        "name": "Document Number",
+        "key": "documentNumber"
+      },
+      {
+        "name": "Instrument Date",
+        "key": "instrumentDate"
+      }
+    ]
+  },
+  "footerColumns": {
+    "type": "list",
+    "values": [
+      {
+        "name": "Grantee",
+        "key": "granteeName"
+      },
+      {
+        "name": "Grantor",
+        "key": "grantorName"
+      },
+      {
+        "name": "Legal Description",
+        "key": "legalDescription"
+      }
+    ]
+  },
+  "thumbnail": {
+    "key": "thumbnail",
+    "display": false,
+    "type": "basic"
+  }
+}
