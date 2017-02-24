@@ -44,6 +44,37 @@ const handleArrayValue = curry(({ values }: ArrayConfigObject, data: Object): Ar
   values
 	.map((obj) => handleObjectValue(obj,data)))
 
+  /**
+   * Takes a MasterConfig object and returns a configured object
+   *
+   * @param {MasterConfig} config - A config object whose keys are the desired keys
+   * @param {Object} data - The object we want to get data from
+   * @return {Object} - An object of the same structure as config with data from data
+   */
+  const configureObject = curry((config: MasterConfig, data: Object): Object => {
+    // Let's get the keys
+  	const finalKeys = Object.keys(config)
+    // Now go over each of the keys, building our final object
+    return finalKeys.reduce((final, k) => {
+      // And grab the type at this key
+      const { type } = config[k]
+      // Find out if we have a way to handle that type/action
+      const typeIndex = TYPES.map(({ type: t }) => t).findIndex(t => ~type.indexOf(t))
+      if (~typeIndex) {
+        // If we do, grab the method
+        const { method } = TYPES[typeIndex]
+        // And set the key to the result of the 'reducer' function
+        final[k] = method.call(null, config[k], data, config)
+      } else {
+        // If we don't know how to handle it, just set it whatever data is
+        final[k] = {
+          value: data[k]
+        }
+      }
+      return final
+    }, {})
+  })
+
 /**
  * Our 'reducers'
  */
@@ -55,39 +86,17 @@ const TYPES = [
   {
     type: 'list',
     method: handleArrayValue
+  },
+  {
+    type: 'nested',
+    method: (currentConfig, input, fullConfig) => {
+      const { value, key } = currentConfig
+      return configureObject(value,input[key])
+    }
   }
 ];
 
-/**
- * Takes a MasterConfig object and returns a configured object
- *
- * @param {MasterConfig} config - A config object whose keys are the desired keys
- * @param {Object} data - The object we want to get data from
- * @return {Object} - An object of the same structure as config with data from data
- */
-const configureObject = curry((config: MasterConfig, data: Object): Object => {
-  // Let's get the keys
-	const finalKeys = Object.keys(config)
-  // Now go over each of the keys, building our final object
-  return finalKeys.reduce((final, k) => {
-    // And grab the type at this key
-    const { type } = config[k]
-    // Find out if we have a way to handle that type/action
-    const typeIndex = TYPES.map(({ type: t }) => t).findIndex(t => ~type.indexOf(t))
-    if (~typeIndex) {
-      // If we do, grab the method
-      const { method } = TYPES[typeIndex]
-      // And set the key to the result of the 'reducer' function
-      final[k] = method.call(null, config[k], data)
-    } else {
-      // If we don't know how to handle it, just set it whatever data is
-      final[k] = {
-        value: data[k]
-      }
-    }
-    return final
-  }, {})
-})
+
 
 module.exports = {
   configureObject,

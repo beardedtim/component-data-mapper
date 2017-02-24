@@ -203,9 +203,3 @@ describe('handleArrayValue', () => {
     ])
   })
 });
-
-describe('handleObjectValue', () => {
-  test('should return an object', () => {
-
-  })
-});
