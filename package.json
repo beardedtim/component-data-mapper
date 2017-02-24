@@ -1,6 +1,6 @@
 {
   "name": "@beardedtim/component-data-mapper",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A way to map input data to react props",
   "main": "./lib/utils.js",
   "repository": "https://github.com/beardedtim/component-data-mapper.git",

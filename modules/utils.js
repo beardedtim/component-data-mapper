@@ -5,6 +5,12 @@ interface TransformedObject {
   value: *
 }
 
+interface NestedConfigureObject {
+  key: string,
+  type: 'nested',
+  value: Object
+}
+
 interface ConfigureObject {
   key: string,
   type: 'list'
@@ -44,6 +50,15 @@ const handleArrayValue = curry(({ values }: ArrayConfigObject, data: Object): Ar
   values
 	.map((obj) => handleObjectValue(obj,data)))
 
+/**
+ * Shallow copies data from the input object
+ *
+ * @param {Object} config - { key } - no props carried
+ * @param {Object} data - the object to grab values from
+ * @return {*} - value from data at given key
+ */
+const handleFlatValue = curry(({ key }, data) => data[key])
+
   /**
    * Takes a MasterConfig object and returns a configured object
    *
@@ -51,7 +66,7 @@ const handleArrayValue = curry(({ values }: ArrayConfigObject, data: Object): Ar
    * @param {Object} data - The object we want to get data from
    * @return {Object} - An object of the same structure as config with data from data
    */
-  const configureObject = curry((config: MasterConfig, data: Object): Object => {
+  const configureFromTypes = curry((types: Array<Object>, config: MasterConfig, data: Object): Object => {
     // Let's get the keys
   	const finalKeys = Object.keys(config)
     // Now go over each of the keys, building our final object
@@ -59,10 +74,10 @@ const handleArrayValue = curry(({ values }: ArrayConfigObject, data: Object): Ar
       // And grab the type at this key
       const { type } = config[k]
       // Find out if we have a way to handle that type/action
-      const typeIndex = TYPES.map(({ type: t }) => t).findIndex(t => ~type.indexOf(t))
+      const typeIndex = types.map(({ type: t }) => t).findIndex(t => ~type.indexOf(t))
       if (~typeIndex) {
         // If we do, grab the method
-        const { method } = TYPES[typeIndex]
+        const { method } = types[typeIndex]
         // And set the key to the result of the 'reducer' function
         final[k] = method.call(null, config[k], data, config)
       } else {
@@ -75,31 +90,39 @@ const handleArrayValue = curry(({ values }: ArrayConfigObject, data: Object): Ar
     }, {})
   })
 
-/**
- * Our 'reducers'
- */
-const TYPES = [
-  {
-    type: 'basic',
-    method: handleObjectValue
-  },
-  {
-    type: 'list',
-    method: handleArrayValue
-  },
-  {
-    type: 'nested',
-    method: (currentConfig, input, fullConfig) => {
-      const { value, key } = currentConfig
-      return configureObject(value,input[key])
-    }
-  }
-];
+  /**
+   * Our 'reducers'
+   */
+   const TYPES = [
+     {
+       type: 'basic',
+       method: handleObjectValue
+     },
+     {
+       type: 'list',
+       method: handleArrayValue
+     },
+     {
+       type: 'nested',
+       method: (currentConfig: NestedConfigureObject, input: Object, fullConfig: MasterConfig): * => {
+         const { value, key } = currentConfig
+         return configureFromTypes(TYPES)(value,input[key])
+       }
+     },
+     {
+       type: 'flat',
+       method: handleFlatValue
+     }
+   ];
 
+const configureObject = configureFromTypes(TYPES)
 
 
 module.exports = {
+  defaultActions: TYPES,
+  configureFromTypes,
   configureObject,
   handleArrayValue,
-  handleObjectValue
+  handleObjectValue,
+  handleFlatValue
 }

@@ -5,9 +5,30 @@
 
 ## Utils
 
-**Currently only `list`, `basic`, and `nested` types are supported. Soon I will refactor and make any reducer work**
 
-### Configure Object
+### Common Errors
+
+If you get `TypeError: Cannot read property 'indexOf' of undefined` it is probably because you don't have your `config` object set correctly. A correctly set `config` object will have as its root keys, keys that match the desired output object. Each key on the `config` object **MUST** have at least 2 keys: `type` and `key`. `type` tells the function how to handle the value and `key` tells the function where on the `data` object we want to get the value from.
+
+### configureFromTypes
+
+This is a way to pass in custom `types` to the configuration function. This must be an array of objects with the schema `{ type: 'some type', method: function }`
+
+The `method` will be called with the following arguments:
+
+```
+method.call(null, config[k], data, config)
+```
+
+- `config[k]` is the value at the current `config` key. `k` corresponds with the final key/root key from the `config` object.
+- `data` is the whole object we are configuring.
+- `config` is the whole `configuration` object in case the method needs to know something special about the configuration.
+
+Whatever this method returns will be set on the final object at the key corresponding to `k` in the above.
+
+### configureObject
+
+This has the default types of `list`, `basic`, `nested`, and `flat`. You can look in `./modules/utils.js` to see what those methods are. This is a curried version of `configureFromTypes`.
 
 ```
 ConfigureObject = { type, key, ...props}
@@ -16,7 +37,7 @@ ArrayConfigObject = { type = 'list', values, ...props }
 
 MasterConfig = { [FINAL_KEY]: ConfigureObject | ArrayConfigObject }
 
-ConfigureObject: MasterConfig -> Object -> Object
+configureObject: MasterConfig -> Object -> Object
 ```
 
 _**ConfigureObject:**_
