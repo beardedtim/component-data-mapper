@@ -1,10 +1,19 @@
 {
   "name": "@beardedtim/component-data-mapper",
-  "version": "0.0.6",
-  "description": "A way to map input data to react props",
+  "version": "0.0.7",
+  "description": "A way to map API data to react props",
   "main": "./lib/utils.js",
   "repository": "https://github.com/beardedtim/component-data-mapper.git",
   "author": "Timi <timiroberts@gmail.com> (https://github.com/beardedtim)",
+  "keywords": [
+    "react",
+    "configuration",
+    "props",
+    "config",
+    "React",
+    "higher-order-component",
+    "compose"
+  ],
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.23.0",
