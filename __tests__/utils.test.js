@@ -32,7 +32,7 @@ describe('configureObject', () => {
 describe('handleArrayValue', () => {
   test('should return an array', () => {
     const columnConfig = {
-          values: [
+          value: [
             {
               key: 'name',
               name: 'First'
@@ -62,7 +62,7 @@ describe('handleArrayValue', () => {
   })
   test('handles values not found in the data object', () => {
     const columnConfig = {
-          values: [
+          value: [
             {
               key: 'name',
               name: 'First'

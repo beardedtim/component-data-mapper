@@ -13,12 +13,12 @@ interface NestedConfigureObject {
 
 interface ConfigureObject {
   key: string,
-  type: 'list'
+  type: string
 }
 
 interface ArrayConfigObject {
-  values: Array<ConfigureObject>,
-  type: string
+  value: Array<ConfigureObject>,
+  type: 'list'
 }
 
 interface MasterConfig  {
@@ -46,8 +46,8 @@ const handleObjectValue = curry(({key, type, ...props}: ConfigureObject , data: 
  * @param {Object} data - the object we want data from.
  * @return {Array} [ { value, ...props } ]
  */
-const handleArrayValue = curry(({ values }: ArrayConfigObject, data: Object): Array<TransformedObject> =>
-  values
+const handleArrayValue = curry(({ value }: ArrayConfigObject, data: Object): Array<TransformedObject> =>
+  value
 	.map((obj) => handleObjectValue(obj,data)))
 
 /**

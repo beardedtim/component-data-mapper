@@ -19,7 +19,7 @@
   },
   "bodyColumns": {
     "type": "list",
-    "values": [
+    "value": [
       {
         "name": "Document Number",
         "key": "documentNumber"
@@ -32,7 +32,7 @@
   },
   "footerColumns": {
     "type": "list",
-    "values": [
+    "value": [
       {
         "name": "Grantee",
         "key": "granteeName"
