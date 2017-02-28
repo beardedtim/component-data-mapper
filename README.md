@@ -33,7 +33,9 @@ This has the default types of `list`, `basic`, `nested`, and `flat`. You can loo
 ```
 ConfigureObject = { type, key, ...props}
 
-ArrayConfigObject = { type = 'list', values, ...props }
+ArrayConfigObject = { type = 'list', value, ...props }
+
+NestedConfigObject = { type = 'nested', value, ...props }
 
 MasterConfig = { [FINAL_KEY]: ConfigureObject | ArrayConfigObject }
 
@@ -48,7 +50,7 @@ _**ConfigureObject:**_
 _**ArrayConfigObject:**_
 
 - `type` is `'list'`
-- `values` is an array of `ConfigureObject`s
+- `value` is an array of `ConfigureObject`s
 
 _**MasterConfig:**_
 
