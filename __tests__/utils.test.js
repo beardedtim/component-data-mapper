@@ -261,5 +261,13 @@ function testConfigurObject(fn) {
        }
      })
     })
+    test('should handle empty config object', () => {
+      const config = {},
+            input = {
+              docType: 'Tim'
+            },
+            configured = fn(config, input);
+      expect(configured).toEqual(input);
+    })
   })
 }

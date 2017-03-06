@@ -69,6 +69,10 @@ const handleFlatValue = curry(({ key }, data) => data[key])
   const configureFromTypes = curry((types: Array<Object>, config: MasterConfig, data: Object): Object => {
     // Let's get the keys
   	const finalKeys = Object.keys(config)
+
+    if (!finalKeys.length){
+      return data;
+    }
     // Now go over each of the keys, building our final object
     return finalKeys.reduce((final, k) => {
       // And grab the type at this key
