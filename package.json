@@ -1,6 +1,6 @@
 {
   "name": "@beardedtim/api-data-mapper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A way to map API to needed schema",
   "main": "./lib/utils.js",
   "repository": "https://github.com/beardedtim/component-data-mapper.git",

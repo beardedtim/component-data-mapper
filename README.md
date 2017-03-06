@@ -57,102 +57,66 @@ _**MasterConfig:**_
 - `string` keys that correspond to the target object's keys
 - Each key will be processed through the `type`
 
+## Default Types
 
-## configuredWith
+The following are the default types that come with `configureObject`:
 
-This method takes one object as an argument of the schema:
-
-```
-{
-  configuration,
-  Component,
-  actions = defaultActions,
-  ...passedProps
-}
-```
-
-`configuration` key is the configuration object on how to transform the data coming in.
-
-`Component` key is the component we want to wrap
-
-`actions` key is an array of objects of the schema `{ type: string, method: fn }` that we can point our `configuration` object to.
-
-All other key/value pairs will be passed to the wrapped component untouched.
-
-It returns the component wrapped and transforms any props given to it using the configurationObject. For a basic prop that we want to transform, we can use `list`, `basic`, or `flat`. If the prop is an object of the schema
-
-`{ key: [TARGET_OBJECT_KEY], value: configObject }`
-
-,we have a `nested` type that we can use. To use the `nested` type, you must have the nested configuration object under the `value` for the main key. Example:
-
-I have `document` coming in as a prop to the component I want to configure. I want to configure the `document` keys and values using this function. This is what my `configurationObject` would look like:
+* `list`: This config must be
 
 ```
 {
-  document: {
-    type: 'nested',
-    key: 'document',
-    value: {
-      id: {
-        type: 'basic',
-        key: 'docId'
-      }
+  type: 'list',
+  key: [KEY_ON_INCOMING_OBJECT],
+  value: [
+    {
+      key: [KEY_ON_INCOMING_OBJECT],
+      // ...passedProps
     }
-  }
+  ]
 }
 ```
 
-And if I was given this as props:
+  - `list` returns an array of `{ value, ...passedProps }`
+
+* `flat`: This config must be:
 
 ```
 {
-  document: {
-    docId: 1
-  }
+  key: [KEY_ON_INCOMING_OBJECT],
+  type: 'flat'
 }
 ```
 
-I would get passed to the wrapped component this:
+  - `flat` does not copy any props and just sets the value
+
+* `nested`: This config must be
 
 ```
 {
-  document: {
-    id: {
-      value: 1,
-    }
+  key: [KEY_ON_INCOMING_OBJECT],
+  type: 'nested',
+  value: {
+    // Config Object
   }
 }
 ```
 
-And we can use this like so:
+  - `nested` allows for custom nested values
+
+* `basic`: This config must be:
 
 ```
-import { configuredWith } from '@beardedtim/component-data-mapper'
-
-const DEMO = ({ document }) => {
-  const { id: {value: id}, title: {value: title} } = document;
-  return (
-    <div>I have the id of {id} and title of {title}</h2>
-  )
-
+{
+  key: [KEY_ON_INCOMING_OBJECT],
+  type: 'basic',
+  // ...passedProps
 }
-const Configured = configuredWith({
-    configuration: {
-       document: {
-         key: 'document',
-         type: 'nested',
-         value: {
-           id: {
-             key: 'docType'
-           },
-           title: {
-             key: 'title'
-           }
-         }
-       }
-    },
-    Component: DEMO
-  })
-<Configured document={{id: 1, title: 'A title!'}}/>
-// <div>I have the id of 1 and title of 'A title!'</h2>
 ```
+  - `basic` returns values underneath the `value` key.
+
+## Rules
+
+* Every default type except for `flat` returns the mapped values under a `value` key in the newly created object.
+* The key of the configuration is the desired final key:
+  - Example: `{ name: { ... } }` as config would return `{ name: ... }` object.
+* The `key` inside of the config, as in `{ key: 'abc' }`, is the key we are wanting to look for in the incoming object
