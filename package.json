@@ -1,18 +1,15 @@
 {
-  "name": "@beardedtim/component-data-mapper",
-  "version": "0.0.9",
-  "description": "A way to map API data to react props",
+  "name": "@beardedtim/api-data-mapper",
+  "version": "0.1.0",
+  "description": "A way to map API to needed schema",
   "main": "./lib/utils.js",
   "repository": "https://github.com/beardedtim/component-data-mapper.git",
   "author": "Timi <timiroberts@gmail.com> (https://github.com/beardedtim)",
   "keywords": [
-    "react",
     "configuration",
     "props",
     "config",
-    "React",
-    "higher-order-component",
-    "compose"
+    "api-translation"
   ],
   "license": "MIT",
   "devDependencies": {
@@ -39,8 +36,5 @@
     "coverage": "jest --coverage",
     "flow": "flow",
     "build": "babel modules -d lib"
-  },
-  "peerDependencies": {
-    "react": "^15.4.2"
   }
 }
